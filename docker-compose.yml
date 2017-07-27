@@ -1,21 +1,25 @@
 version: '2'
 services:
-  mysql:
+  datastore01:
+    image: busybox
+    volumes:
+      - ./mysql/db:/var/lib/mysql
+  mysql01:
     build: ./mysql
+    command: bash -c 'usermod -o -u 1000 mysql; groupmod -o -g 500 mysql; chown -R mysql:root /var/run/mysqld/; /entrypoint.sh mysqld --user=mysql --console'
     ports:
-      - '7976:3306'
+      - '3306:3306'
+    hostname: mysql01
     environment:
       MYSQL_ROOT_PASSWORD: root
-    volumes:
-      - db:/var/lib/mysql
-  web:
+    volumes_from:
+      - datastore01
+  web01:
     build: ./web
     ports:
       - '7979:80'
     volumes:
       - ./www:/var/www/html
       - ./web/log:/var/log/apache2
-    depends_on:
-      - mysql
-volumes:
-  db:
+    links:
+      - mysql01

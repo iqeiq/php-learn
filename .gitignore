@@ -1,4 +1,6 @@
-
+*.log
+./web/log
+./mysql/db
 
 # Added by gemignore. Snippet 'CakePHP'
 # CakePHP 3
@@ -35,7 +37,8 @@
 .LSOverride
 
 # Icon must end with two \r
-Icon
+Icon
+
 
 # Thumbnails
 ._*
